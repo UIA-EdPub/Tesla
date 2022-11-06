@@ -16,7 +16,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsFragment : Fragment() {
 
+    private lateinit var map: GoogleMap
+
     private val callback = OnMapReadyCallback { googleMap ->
+
+        map = googleMap
         /**
          * Manipulates the map once available.
          * This callback is triggered when the map is ready to be used.
@@ -26,9 +30,10 @@ class MapsFragment : Fragment() {
          * install it inside the SupportMapFragment. This method will only be triggered once the
          * user has installed Google Play services and returned to the app.
          */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        googleMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+        val centralLib = LatLng(28.56172208815701, 77.28194072328036)
+        googleMap.addMarker(MarkerOptions().position(centralLib).title("Marker in Central Library"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(centralLib))
     }
 
     override fun onCreateView(
