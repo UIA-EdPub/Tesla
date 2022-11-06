@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:minHeight="56dp"
-        android:text="text"
+        android:text="@string/done"
         android:textAllCaps="false"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
