@@ -1,20 +1,24 @@
 package com.edpub.tesla
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.pm.PackageManager
-import android.content.pm.PermissionInfo
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.location.Location
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
+import androidx.fragment.app.Fragment
 import com.edpub.tesla.databinding.FragmentMapsBinding
-
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -22,18 +26,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import java.security.Permissions
-
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.FrameLayout
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import java.security.Permission
+import java.io.File
+import java.io.FileOutputStream
 
 
 class MapsFragment : Fragment() {
@@ -59,11 +53,6 @@ class MapsFragment : Fragment() {
         googleMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
 
         getDeviceLocation()
-
-
-//        val centralLib = LatLng(28.56172208815701, 77.28194072328036)
-//        googleMap.addMarker(MarkerOptions().position(centralLib).title("Marker in Central Library"))
-//        googleMap.moveCamera(CameraUpdateFactory.newLatLng(centralLib))
     }
 
     override fun onCreateView(
@@ -92,7 +81,10 @@ class MapsFragment : Fragment() {
             zoomOut()
         }
         binding.bTakeSs.setOnClickListener {
-            binding.llMap.drawToBitmap()
+            val roofImage = binding.llMap.drawToBitmap()
+            val roofDrawable: Drawable = BitmapDrawable(resources, roofImage)
+
+
         }
 
         binding.cvLocateMe.setOnClickListener {
@@ -125,12 +117,24 @@ class MapsFragment : Fragment() {
         }
     }
 
+    private fun askStoragePermission(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return true
+        } else {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(WRITE_EXTERNAL_STORAGE),
+                LOCATION_REQUEST_CODE
+            )
+        }
+        return true
+    }
+
     private fun getDeviceLocation() {
-        /*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         */
-        Log.i("fucklocation", "cv click")
         try {
             if (locationPermissionGranted) {
                 val locationResult = fusedLocationProviderClient.lastLocation
@@ -160,8 +164,6 @@ class MapsFragment : Fragment() {
                         }
                     } else {
 
-                        Log.d("fucklocation", "Current location is null. Using defaults.")
-                        Log.e("fucklocation", "Exception: %s", task.exception)
 
                         map.moveCamera(
                             CameraUpdateFactory
@@ -177,7 +179,7 @@ class MapsFragment : Fragment() {
                 }
             }
         } catch (e: SecurityException) {
-            Log.e("fucklocation", e.message, e)
+            Log.e("MapLoading", e.message, e)
         }
     }
 
