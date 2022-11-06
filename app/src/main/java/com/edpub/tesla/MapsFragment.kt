@@ -81,9 +81,16 @@ class MapsFragment : Fragment() {
             zoomOut()
         }
         binding.bTakeSs.setOnClickListener {
-            val roofImage = binding.llMap.drawToBitmap()
-            val roofDrawable: Drawable = BitmapDrawable(resources, roofImage)
 
+            try{
+                val roofImage = binding.llMap.drawToBitmap()
+                Log.i("mapimage", roofImage.toString())
+                binding.llMap.visibility=View.INVISIBLE
+                val roofDrawable: Drawable = BitmapDrawable(resources, roofImage)
+                binding.ivTest.setImageDrawable(roofDrawable)
+            }catch (e: java.lang.Exception){
+                Log.i("mapimage", e.toString())
+            }
 
         }
 

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/ll_map"
         android:layout_width="match_parent"
@@ -23,6 +24,8 @@
         android:id="@+id/cv_zoom_in"
         android:layout_width="@dimen/map_function_size"
         android:layout_height="@dimen/map_function_size"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
         android:layout_margin="20dp"
         android:background="@color/white"
         app:cardCornerRadius="10dp"
@@ -41,6 +44,8 @@
         android:id="@+id/cv_zoom_out"
         android:layout_width="@dimen/map_function_size"
         android:layout_height="@dimen/map_function_size"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
         android:layout_margin="20dp"
         android:background="@color/white"
         app:cardCornerRadius="10dp"
@@ -58,6 +63,8 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_locate_me"
         android:layout_width="@dimen/map_function_size"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
         android:layout_height="@dimen/map_function_size"
         android:layout_margin="20dp"
         android:background="@color/white"
@@ -86,4 +93,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintLeft_toRightOf="parent" />
+
+    <ImageView
+        android:padding="15dp"
+        android:src="@drawable/medbud"
+        android:id="@+id/iv_test"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="80dp"
+        android:layout_height="80dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
