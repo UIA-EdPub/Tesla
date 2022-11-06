@@ -95,7 +95,6 @@ class MapsFragment : Fragment() {
         }
 
         binding.cvLocateMe.setOnClickListener {
-            Log.i("fuckloction", "cv click")
             getDeviceLocation()
         }
     }

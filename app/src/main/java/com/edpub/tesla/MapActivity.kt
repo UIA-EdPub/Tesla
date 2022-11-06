@@ -16,5 +16,8 @@ class MapActivity : AppCompatActivity() {
         binding = ActivityMapBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
+        setSupportActionBar(binding.tbMapScreen)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 }
