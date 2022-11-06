@@ -4,13 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MapActivity">
 
-    <Button
+    <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"
-        android:text="map"
-        android:id="@+id/b_map"
+        android:id="@+id/fcv_map_container"
+        app:layout_constraintBottom_toTopOf="@id/b_take_ss"
         app:layout_constraintTop_toTopOf="parent"
+        android:name="com.edpub.tesla.MapsFragment"
+        android:layout_height="0dp"/>
+    <Button
+        android:id="@+id/b_take_ss"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:text="text"
         android:layout_height="wrap_content"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
