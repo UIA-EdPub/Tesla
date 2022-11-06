@@ -23,5 +23,6 @@
         <item name="fontFamily">@font/metropolis_semi_bold</item>
         <item name="android:textColor">@color/primaryColor</item>
     </style>
-    <dimen name="default_corner_radius">8dp</dimen>
+    <dimen name="default_corner_radius">10dp</dimen>
+    <dimen name="map_function_size">48dp</dimen>
 </resources>

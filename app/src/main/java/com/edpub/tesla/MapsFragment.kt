@@ -54,19 +54,16 @@ class MapsFragment : Fragment() {
     private val callback = OnMapReadyCallback { googleMap ->
 
         map = googleMap
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
         googleMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
-        val centralLib = LatLng(28.56172208815701, 77.28194072328036)
-        googleMap.addMarker(MarkerOptions().position(centralLib).title("Marker in Central Library"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(centralLib))
+
+        getDeviceLocation()
+
+
+//        val centralLib = LatLng(28.56172208815701, 77.28194072328036)
+//        googleMap.addMarker(MarkerOptions().position(centralLib).title("Marker in Central Library"))
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLng(centralLib))
     }
 
     override fun onCreateView(
@@ -74,7 +71,6 @@ class MapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         binding = FragmentMapsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -88,7 +84,7 @@ class MapsFragment : Fragment() {
 
     }
 
-    private fun initView(){
+    private fun initView() {
         binding.cvZoomIn.setOnClickListener {
             zoomIn()
         }
@@ -105,18 +101,27 @@ class MapsFragment : Fragment() {
         }
     }
 
-    fun zoomIn(){
+    fun zoomIn() {
         map.animateCamera(CameraUpdateFactory.zoomIn())
     }
-    fun zoomOut(){
+
+    fun zoomOut() {
         map.animateCamera(CameraUpdateFactory.zoomOut())
     }
 
-    private fun checkPermission(){
-        if(ActivityCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
+    private fun checkPermission() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             locationPermissionGranted = true
-        }else{
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
+        } else {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(ACCESS_FINE_LOCATION),
+                LOCATION_REQUEST_CODE
+            )
         }
     }
 
@@ -134,16 +139,39 @@ class MapsFragment : Fragment() {
                         // Set the map's camera position to the current location of the device.
                         lastKnownLocation = task.result
                         if (lastKnownLocation != null) {
-                            map?.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                LatLng(lastKnownLocation!!.latitude,
-                                    lastKnownLocation!!.longitude), DEFAULT_ZOOM.toFloat()))
+                            map.moveCamera(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    LatLng(
+                                        lastKnownLocation!!.latitude,
+                                        lastKnownLocation!!.longitude
+                                    ), DEFAULT_ZOOM.toFloat()
+                                )
+                            )
+
+                            map.addMarker(
+                                MarkerOptions().position(
+                                    LatLng(
+                                        lastKnownLocation!!.latitude,
+                                        lastKnownLocation!!.longitude
+                                    )
+                                ).title("Your Current Location")
+                            )
+
                         }
                     } else {
 
                         Log.d("fucklocation", "Current location is null. Using defaults.")
                         Log.e("fucklocation", "Exception: %s", task.exception)
-                        map?.moveCamera(CameraUpdateFactory
-                            .newLatLngZoom(defaultLocation, DEFAULT_ZOOM.toFloat()))
+
+                        map.moveCamera(
+                            CameraUpdateFactory
+                                .newLatLngZoom(defaultLocation, DEFAULT_ZOOM.toFloat())
+                        )
+                        map.addMarker(
+                            MarkerOptions().position(
+                                defaultLocation
+                            ).title("Jamia Central Library")
+                        )
 //                        map?.uiSettings?.isMyLocationButtonEnabled = false
                     }
                 }
