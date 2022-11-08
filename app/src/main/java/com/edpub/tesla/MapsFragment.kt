@@ -2,6 +2,7 @@ package com.edpub.tesla
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -82,15 +83,18 @@ class MapsFragment : Fragment() {
         }
         binding.bTakeSs.setOnClickListener {
 
-            try{
-                val roofImage = binding.llMap.drawToBitmap()
-                Log.i("mapimage", roofImage.toString())
-                binding.llMap.visibility=View.INVISIBLE
-                val roofDrawable: Drawable = BitmapDrawable(resources, roofImage)
-                binding.ivTest.setImageDrawable(roofDrawable)
-            }catch (e: java.lang.Exception){
-                Log.i("mapimage", e.toString())
-            }
+            val intent = Intent(requireActivity(), CalculateSavingActivity::class.java)
+            startActivity(intent)
+
+//            try{
+//                val roofImage = binding.llMap.drawToBitmap()
+//                Log.i("mapimage", roofImage.toString())
+//                binding.llMap.visibility=View.INVISIBLE
+//                val roofDrawable: Drawable = BitmapDrawable(resources, roofImage)
+//                binding.ivTest.setImageDrawable(roofDrawable)
+//            }catch (e: java.lang.Exception){
+//                Log.i("mapimage", e.toString())
+//            }
 
         }
 

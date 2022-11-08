@@ -6,4 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".CalculateSavingActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/abl_calculate_saving_screen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_calculate_saving_screen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:navigationIcon="@drawable/ic_back"
+            app:title="Calculate Savings"
+            app:titleTextAppearance="@style/title_default" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_area"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/abl_calculate_saving_screen"
+        android:layout_height="wrap_content"/>
+
+    <Spinner
+        android:id="@+id/s_tonnage"
+        app:layout_constraintTop_toBottomOf="@id/tv_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Spinner
+        android:id="@+id/s_state"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/s_tonnage"
+        android:layout_height="wrap_content"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
