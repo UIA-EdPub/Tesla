@@ -83,18 +83,22 @@ class MapsFragment : Fragment() {
         }
         binding.bTakeSs.setOnClickListener {
 
-            val intent = Intent(requireActivity(), CalculateSavingActivity::class.java)
+//            val roofImage = binding.llMap.drawToBitmap()
+
+            val roofImage = UtilityFunctions.getBitmapFromView(binding.llMap)
+
+//            binding.llMap.isDrawingCacheEnabled = true
+//            val roofImage = Bitmap.createBitmap(binding.llMap.drawingCache)
+//            binding.llMap.isDrawingCacheEnabled = false
+
+            val bitmapUri = UtilityFunctions.getUriFromBitmap(roofImage, requireActivity().contentResolver)
+            Log.i("SexyPath", bitmapUri.toString())
+
+
+            val intent = Intent(requireContext(), EditMapAreaActivity::class.java)
+            intent.putExtra("mapImagePath", bitmapUri.toString())
             startActivity(intent)
 
-//            try{
-//                val roofImage = binding.llMap.drawToBitmap()
-//                Log.i("mapimage", roofImage.toString())
-//                binding.llMap.visibility=View.INVISIBLE
-//                val roofDrawable: Drawable = BitmapDrawable(resources, roofImage)
-//                binding.ivTest.setImageDrawable(roofDrawable)
-//            }catch (e: java.lang.Exception){
-//                Log.i("mapimage", e.toString())
-//            }
 
         }
 

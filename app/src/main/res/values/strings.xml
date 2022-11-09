@@ -1,4 +1,21 @@
 <resources>
     <string name="app_name">Tesla</string>
     <string name="done">Done</string>
+    
+    <string-array name="months">
+        <item>January</item>
+        <item>January</item>
+        <item>January</item>
+        <item>January</item>
+        <item>January</item>
+        <item>January</item>
+        <item>January</item>
+    </string-array>
+    <string-array name="ac_tonnage">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="states">
+        <item>Uttar Pradesh</item>
+    </string-array>
 </resources>
