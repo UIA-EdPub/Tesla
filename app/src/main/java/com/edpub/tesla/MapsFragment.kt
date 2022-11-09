@@ -85,7 +85,7 @@ class MapsFragment : Fragment() {
 
 //            val roofImage = binding.llMap.drawToBitmap()
 
-            val roofImage = UtilityFunctions.getBitmapFromView(binding.llMap)
+            val roofImage = UtilityFunctions.getBitmapFromView(binding.fMap)
 
 //            binding.llMap.isDrawingCacheEnabled = true
 //            val roofImage = Bitmap.createBitmap(binding.llMap.drawingCache)
