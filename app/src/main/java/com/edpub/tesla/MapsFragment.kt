@@ -95,6 +95,7 @@ class MapsFragment : Fragment() {
             Log.i("SexyPath", bitmapUri.toString())
 
 
+
             val intent = Intent(requireContext(), EditMapAreaActivity::class.java)
             intent.putExtra("mapImagePath", bitmapUri.toString())
             startActivity(intent)
