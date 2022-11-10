@@ -79,7 +79,7 @@ class MapsFragment : Fragment() {
         binding.cvZoomOut.setOnClickListener {
             zoomOut()
         }
-        binding.bTakeSs.setOnClickListener {
+        binding.cvTakeSs.setOnClickListener {
 
             map.clear()
 
