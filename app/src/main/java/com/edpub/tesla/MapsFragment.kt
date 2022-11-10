@@ -71,7 +71,6 @@ class MapsFragment : Fragment() {
         mapFragment?.getMapAsync(callback)
         checkPermission()
         initView()
-
     }
 
     private fun initView() {
@@ -82,25 +81,19 @@ class MapsFragment : Fragment() {
             zoomOut()
         }
         binding.bTakeSs.setOnClickListener {
+            val snapshotReadyCallback : GoogleMap.SnapshotReadyCallback = GoogleMap.SnapshotReadyCallback { selectedScreenShot ->
+                val uri = UtilityFunctions.getUriFromBitmap(selectedScreenShot!!, requireActivity().contentResolver)
+                Log.i("mapimagesuck", uri.toString())
+                val intent = Intent(requireActivity(), EditMapAreaActivity::class.java)
+                intent.putExtra("mapImagePath", uri.toString())
+                startActivity(intent)
+            }
 
-//            val roofImage = binding.llMap.drawToBitmap()
+            val onMapLoadedCallback : GoogleMap.OnMapLoadedCallback = GoogleMap.OnMapLoadedCallback {
+                map.snapshot(snapshotReadyCallback)
+            }
 
-            val roofImage = UtilityFunctions.getBitmapFromView(binding.fMap)
-
-//            binding.llMap.isDrawingCacheEnabled = true
-//            val roofImage = Bitmap.createBitmap(binding.llMap.drawingCache)
-//            binding.llMap.isDrawingCacheEnabled = false
-
-            val bitmapUri = UtilityFunctions.getUriFromBitmap(roofImage, requireActivity().contentResolver)
-            Log.i("SexyPath", bitmapUri.toString())
-
-
-
-            val intent = Intent(requireContext(), EditMapAreaActivity::class.java)
-            intent.putExtra("mapImagePath", bitmapUri.toString())
-            startActivity(intent)
-
-
+            map.setOnMapLoadedCallback(onMapLoadedCallback)
         }
 
         binding.cvLocateMe.setOnClickListener {
