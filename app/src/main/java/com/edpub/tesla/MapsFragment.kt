@@ -37,7 +37,6 @@ class MapsFragment : Fragment() {
     private val DEFAULT_ZOOM = 18
 
     private lateinit var map: GoogleMap
-    private lateinit var cameraPosition: CameraPosition
     private var locationPermissionGranted = false
     private var lastKnownLocation: Location? = null
     private val defaultLocation = LatLng(28.56172208815701, 77.28194072328036)
@@ -81,9 +80,11 @@ class MapsFragment : Fragment() {
             zoomOut()
         }
         binding.bTakeSs.setOnClickListener {
+
+            map.clear()
+
             val snapshotReadyCallback : GoogleMap.SnapshotReadyCallback = GoogleMap.SnapshotReadyCallback { selectedScreenShot ->
                 val uri = UtilityFunctions.getUriFromBitmap(selectedScreenShot!!, requireActivity().contentResolver)
-                Log.i("mapimagesuck", uri.toString())
                 val intent = Intent(requireActivity(), EditMapAreaActivity::class.java)
                 intent.putExtra("mapImagePath", uri.toString())
                 startActivity(intent)
@@ -125,22 +126,7 @@ class MapsFragment : Fragment() {
         }
     }
 
-    private fun askStoragePermission(): Boolean {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                WRITE_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            return true
-        } else {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(WRITE_EXTERNAL_STORAGE),
-                LOCATION_REQUEST_CODE
-            )
-        }
-        return true
-    }
+
 
     private fun getDeviceLocation() {
         try {
@@ -191,4 +177,17 @@ class MapsFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        if(lastKnownLocation!=null){
+            map.addMarker(
+                MarkerOptions().position(
+                    LatLng(
+                        lastKnownLocation!!.latitude,
+                        lastKnownLocation!!.longitude
+                    )
+                ).title("Your Current Location")
+            )
+        }
+        super.onResume()
+    }
 }
