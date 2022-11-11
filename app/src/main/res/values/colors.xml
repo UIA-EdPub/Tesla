@@ -15,6 +15,7 @@
     <color name="chapter_title">#24265f</color>
 
     <!--  Shades of green  -->
+    <color name="green1_light">#328FE27E</color>
     <color name="green1">#8fe27e</color>
     <color name="green2">#78dc66</color>
     <color name="green3">#62d74c</color>
