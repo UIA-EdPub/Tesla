@@ -26,45 +26,53 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_area"
         android:layout_width="match_parent"
-        android:text="20"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
-        app:layout_constraintTop_toBottomOf="@id/abl_calculate_saving_screen"
-        android:layout_height="wrap_content"/>
+        android:text="20"
+        app:layout_constraintTop_toBottomOf="@id/abl_calculate_saving_screen" />
 
     <Spinner
         android:id="@+id/s_tonnage"
-        android:layout_margin="@dimen/default_margin"
-
-        app:layout_constraintTop_toBottomOf="@id/tv_area"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        app:layout_constraintTop_toBottomOf="@id/tv_area" />
 
     <Spinner
         android:id="@+id/s_state"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/default_margin"
+        android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/s_tonnage"
-        android:layout_height="wrap_content"/>
+        android:layout_margin="@dimen/default_margin"
+        app:layout_constraintTop_toBottomOf="@id/s_tonnage" />
 
     <Spinner
         android:id="@+id/s_month"
-        app:layout_constraintTop_toBottomOf="@id/s_state"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
+        app:layout_constraintTop_toBottomOf="@id/s_state" />
 
-        android:layout_height="wrap_content"/>
-
-    <com.google.android.material.button.MaterialButton
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_calculate"
         android:layout_width="match_parent"
-        android:id="@+id/b_calculate"
-        android:text="Done"
+        android:layout_height="@dimen/min_button_height"
         android:layout_margin="@dimen/default_margin"
+        android:alpha="0.2"
+        app:cardBackgroundColor="@color/green1"
+        app:cardCornerRadius="@dimen/default_corner_radius"
+        app:layout_constraintTop_toBottomOf="@id/s_month" />
 
-        app:cornerRadius="@dimen/default_corner_radius"
-        android:textAllCaps="false"
-        app:layout_constraintTop_toBottomOf="@id/s_month"
-        android:layout_height="wrap_content"/>
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/button_text_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calculate"
+        app:layout_constraintBottom_toBottomOf="@id/cv_calculate"
+        app:layout_constraintLeft_toLeftOf="@id/cv_calculate"
+        app:layout_constraintRight_toRightOf="@id/cv_calculate"
+        app:layout_constraintTop_toTopOf="@id/cv_calculate" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,4 +27,16 @@
     <dimen name="min_button_height">56dp</dimen>
     <dimen name="default_margin">20dp</dimen>
     <dimen name="map_function_size">48dp</dimen>
+    <style name="button_text_style">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/metropolis_semi_bold</item>
+    </style>
+    <style name="button_card_style">
+        <item name="cardBackgroundColor">@color/green1</item>
+        <item name="alpha">0.2</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="cardCornerRadius">@dimen/default_corner_radius</item>
+    </style>
 </resources>
