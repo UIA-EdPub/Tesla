@@ -11,14 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MapsFragment" />
+
+
     <androidx.appcompat.widget.SearchView
-        app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/sv_location"
-        app:queryHint="Search Here"
-        app:iconifiedByDefault="false"
-        android:layout_margin="@dimen/default_margin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        android:background="@drawable/search_view_background"
+        app:iconifiedByDefault="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="Search Here" />
 
 
     <androidx.cardview.widget.CardView

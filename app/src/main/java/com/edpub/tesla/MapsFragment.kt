@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView.OnQueryTextListener
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import java.io.IOException
 
 
@@ -49,6 +51,11 @@ class MapsFragment : Fragment() {
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
         googleMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+        googleMap.uiSettings.apply {
+            isCompassEnabled = false
+            isMapToolbarEnabled = false
+            isIndoorLevelPickerEnabled = false
+        }
 
         getDeviceLocation()
     }
@@ -95,19 +102,25 @@ class MapsFragment : Fragment() {
                     }
                     // on below line we are getting the location
                     // from our list a first position.
-                    val address = addressList!![0]
+                    if(addressList!!.size==0){
+                        Snackbar.make(requireContext(), binding.cvZoomIn, "Location cannot be found", Snackbar.LENGTH_LONG).show()
+                    }else{
 
-                    // on below line we are creating a variable for our location
-                    // where we will add our locations latitude and longitude.
-                    val latLng = LatLng(address.latitude, address.longitude)
+                        val address = addressList!![0]
+                        // on below line we are creating a variable for our location
+                        // where we will add our locations latitude and longitude.
+                        val latLng = LatLng(address.latitude, address.longitude)
 
-                    map.clear()
+                        map.clear()
 
-                    // on below line we are adding marker to that position.
-                    map.addMarker(MarkerOptions().position(latLng).title(location))
+                        // on below line we are adding marker to that position.
+                        map.addMarker(MarkerOptions().position(latLng).title(location))
 
-                    // below line is to animate camera to that position.
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
+                        // below line is to animate camera to that position.
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
+                    }
+
+
                 }
                 return false
             }

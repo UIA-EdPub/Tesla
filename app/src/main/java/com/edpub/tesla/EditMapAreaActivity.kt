@@ -1,5 +1,6 @@
 package com.edpub.tesla
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -23,5 +24,18 @@ class EditMapAreaActivity : AppCompatActivity() {
         Log.i("SexyPath", roofImageString.toString())
         val roofImageUri = Uri.parse(roofImageString)
         binding.ivRoofImage.setImageURI(roofImageUri)
+
+        initView()
+    }
+    private fun initView(){
+        binding.cvConfirm.setOnClickListener {
+            val intent = Intent(this, CalculateSavingActivity::class.java)
+            startActivity(intent)
+
+        }
+
+        binding.cvRetake.setOnClickListener {
+            super.onBackPressed()
+        }
     }
 }

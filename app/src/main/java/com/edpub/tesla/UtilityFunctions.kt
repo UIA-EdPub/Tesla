@@ -12,6 +12,12 @@ import java.io.ByteArrayOutputStream
 
 
 object UtilityFunctions {
+
+    //all temps in degree celcius
+    const val min_temp = 18
+    const val max_temp = 26
+    //if avg temp of day lies in this range: no AC required
+
     fun savingInOneDay(r: Float, e: Float) {
 
     }

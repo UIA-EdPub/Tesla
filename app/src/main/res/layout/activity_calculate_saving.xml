@@ -27,6 +27,7 @@
         android:id="@+id/tv_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/button_text_style"
         android:layout_margin="@dimen/default_margin"
         android:text="20"
         app:layout_constraintTop_toBottomOf="@id/abl_calculate_saving_screen" />
@@ -34,7 +35,6 @@
     <Spinner
         android:id="@+id/s_tonnage"
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
         app:layout_constraintTop_toBottomOf="@id/tv_area" />
@@ -43,7 +43,6 @@
         android:id="@+id/s_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_margin="@dimen/default_margin"
         app:layout_constraintTop_toBottomOf="@id/s_tonnage" />
 
