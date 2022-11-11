@@ -1,21 +1,19 @@
 package com.edpub.tesla
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView.OnQueryTextListener
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
-import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import com.edpub.tesla.databinding.FragmentMapsBinding
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -24,11 +22,9 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import java.io.File
-import java.io.FileOutputStream
+import java.io.IOException
 
 
 class MapsFragment : Fragment() {
@@ -44,6 +40,8 @@ class MapsFragment : Fragment() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     private lateinit var binding: FragmentMapsBinding
+
+    private lateinit var mapFragment : SupportMapFragment
 
     private val callback = OnMapReadyCallback { googleMap ->
 
@@ -66,13 +64,59 @@ class MapsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.f_map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
+        mapFragment = childFragmentManager.findFragmentById(R.id.f_map) as SupportMapFragment
+        mapFragment.getMapAsync(callback)
         checkPermission()
         initView()
     }
 
     private fun initView() {
+
+        binding.svLocation.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                // on below line we are getting the
+                // location name from search view.
+                val location: String = binding.svLocation.query.toString()
+
+                // below line is to create a list of address
+                // where we will store the list of all address.
+                var addressList: List<Address>? = null
+
+                // checking if the entered location is null or not.
+                if (location != null || location == "") {
+                    // on below line we are creating and initializing a geo coder.
+                    val geocoder = Geocoder(requireContext())
+                    try {
+                        // on below line we are getting location from the
+                        // location name and adding that location to address list.
+                        addressList = geocoder.getFromLocationName(location, 1)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                    // on below line we are getting the location
+                    // from our list a first position.
+                    val address = addressList!![0]
+
+                    // on below line we are creating a variable for our location
+                    // where we will add our locations latitude and longitude.
+                    val latLng = LatLng(address.latitude, address.longitude)
+
+                    map.clear()
+
+                    // on below line we are adding marker to that position.
+                    map.addMarker(MarkerOptions().position(latLng).title(location))
+
+                    // below line is to animate camera to that position.
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+        })
+        // at last we calling our map fragment to update.
         binding.cvZoomIn.setOnClickListener {
             zoomIn()
         }

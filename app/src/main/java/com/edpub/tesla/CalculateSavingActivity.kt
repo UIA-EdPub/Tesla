@@ -58,7 +58,7 @@ class CalculateSavingActivity : AppCompatActivity() {
 
 
 
-        binding.bCalculate.setOnClickListener {
+        binding.cvCalculate.setOnClickListener {
             val month = binding.sMonth.selectedItem
             val ton = binding.sTonnage.selectedItem
             val state = binding.sState.selectedItem
