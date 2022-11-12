@@ -1,13 +1,15 @@
 package com.edpub.tesla
 
 import android.content.ContentResolver
+import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.MediaStore
-import android.view.View
+import android.util.Log
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import java.io.ByteArrayOutputStream
 
 
@@ -29,5 +31,6 @@ object UtilityFunctions {
             ?: return null
         return Uri.parse(path)
     }
+
 
 }
