@@ -1,10 +1,12 @@
 package com.edpub.tesla
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import com.edpub.tesla.databinding.ActivityCalculateSavingBinding
+
 
 class CalculateSavingActivity : AppCompatActivity() {
 
@@ -66,5 +68,17 @@ class CalculateSavingActivity : AppCompatActivity() {
             Log.i("CalcSav", month.toString()+ " " + ton.toString() + " " + state.toString())
         }
 
+    }
+
+    // this event will enable the back
+    // function to the button on press
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                super.onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

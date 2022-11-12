@@ -3,6 +3,7 @@ package com.edpub.tesla
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.edpub.tesla.databinding.ActivityEditMapAreaBinding
@@ -11,6 +12,8 @@ import com.edpub.tesla.databinding.ActivityEditMapAreaBinding
 class EditMapAreaActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditMapAreaBinding
+
+    private lateinit var roofImageUri:Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +28,7 @@ class EditMapAreaActivity : AppCompatActivity() {
 
         val roofImageString = intent.getStringExtra("mapImagePath")
         Log.i("SexyPath", roofImageString.toString())
-        val roofImageUri = Uri.parse(roofImageString)
+        roofImageUri = Uri.parse(roofImageString)//gives null pointer exception
         binding.ivRoofImage.setImageURI(roofImageUri)
 
         initView()
