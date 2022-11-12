@@ -19,6 +19,9 @@ class EditMapAreaActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        setSupportActionBar(binding.tbEditMap)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
 
         val roofImageString = intent.getStringExtra("mapImagePath")
         Log.i("SexyPath", roofImageString.toString())
