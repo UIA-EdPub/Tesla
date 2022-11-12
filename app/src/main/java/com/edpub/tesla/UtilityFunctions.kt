@@ -7,9 +7,11 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
 import java.io.ByteArrayOutputStream
 
 
@@ -32,5 +34,48 @@ object UtilityFunctions {
         return Uri.parse(path)
     }
 
+    fun makeReq(context: Context): Map<String, Any>?{
+        Log.i("fetchjson", "on")
+        // Instantiate the RequestQueue.
+        val queue = Volley.newRequestQueue(context)
+        val url = "https://power.larc.nasa.gov/api/temporal/daily/point?start=20220101&end=20220131&latitude=28.82899353809571&longitude=78.24633084540343&community=ag&parameters=T2M,ALLSKY_SFC_PAR_TOT&format=json&header=true&time-standard=lst"
 
+        var map: Map<String, Any>? = null
+
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
+            { response ->
+                Log.i("fetchjson", response.toString())
+                map = converter(response.toString())
+                Log.i("fetchjson", map.toString())
+
+            },
+            { error ->
+                map = null
+            }
+        )
+        queue.add(jsonObjectRequest)
+        extractTemperatures(map)
+        return map
+    }
+
+    private fun converter(myJsonObjectString: String): Map<String, Any> {
+        return Gson().fromJson(
+            myJsonObjectString, object : TypeToken<HashMap<String?, Any?>?>() {}.type
+        )
+    }
+
+    fun extractSolarIntensity(){
+
+    }
+
+    fun extractTemperatures(myMap: Map<String, Any>?){
+        Log.i("fetchjson", "con")
+        if(myMap.isNullOrEmpty()){
+            Log.i("fetchjson", "retf")
+            return
+        }
+        Log.i("fetchjson", myMap["properties"].toString())
+    }
 }
+
+//map[properties][parameter][T2M][each day]
