@@ -11,8 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView.OnQueryTextListener
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -55,6 +53,14 @@ class MapsFragment : Fragment() {
             isCompassEnabled = false
             isMapToolbarEnabled = false
             isIndoorLevelPickerEnabled = false
+        }
+
+        map.setOnMapClickListener { point ->
+            map.clear()
+            val marker = MarkerOptions().position(LatLng(point.latitude, point.longitude))
+                .title("Your chosen location")
+            map.addMarker(marker)
+//            println(point.latitude.toString() + "---" + point.longitude)
         }
 
         getDeviceLocation()
@@ -102,7 +108,7 @@ class MapsFragment : Fragment() {
                     }
                     // on below line we are getting the location
                     // from our list a first position.
-                    if(addressList!!.size==0){
+                    if(addressList!!.isEmpty()){
                         Snackbar.make(requireContext(), binding.cvZoomIn, "Location cannot be found", Snackbar.LENGTH_LONG).show()
                     }else{
 
@@ -157,6 +163,8 @@ class MapsFragment : Fragment() {
         binding.cvLocateMe.setOnClickListener {
             getDeviceLocation()
         }
+
+
     }
 
     fun zoomIn() {
