@@ -33,6 +33,8 @@ class MapsFragment : Fragment() {
     private val DEFAULT_ZOOM = 18
 
     private lateinit var map: GoogleMap
+    private var lastLatitude: Double = 28.56172208815701
+    private var lastLongitude: Double = 77.28194072328036
     private var locationPermissionGranted = false
     private var lastKnownLocation: Location? = null
     private val defaultLocation = LatLng(28.56172208815701, 77.28194072328036)
@@ -41,7 +43,7 @@ class MapsFragment : Fragment() {
 
     private lateinit var binding: FragmentMapsBinding
 
-    private lateinit var mapFragment : SupportMapFragment
+    private lateinit var mapFragment: SupportMapFragment
 
     private val callback = OnMapReadyCallback { googleMap ->
 
@@ -57,10 +59,13 @@ class MapsFragment : Fragment() {
 
         map.setOnMapClickListener { point ->
             map.clear()
+
+            lastLatitude = point.latitude
+            lastLongitude = point.longitude
+
             val marker = MarkerOptions().position(LatLng(point.latitude, point.longitude))
                 .title("Your chosen location")
             map.addMarker(marker)
-//            println(point.latitude.toString() + "---" + point.longitude)
         }
 
         getDeviceLocation()
@@ -87,43 +92,35 @@ class MapsFragment : Fragment() {
 
         binding.svLocation.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                // on below line we are getting the
-                // location name from search view.
+
                 val location: String = binding.svLocation.query.toString()
 
-                // below line is to create a list of address
-                // where we will store the list of all address.
                 var addressList: List<Address>? = null
 
-                // checking if the entered location is null or not.
                 if (location != null || location == "") {
-                    // on below line we are creating and initializing a geo coder.
                     val geocoder = Geocoder(requireContext())
                     try {
-                        // on below line we are getting location from the
-                        // location name and adding that location to address list.
                         addressList = geocoder.getFromLocationName(location, 1)
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
-                    // on below line we are getting the location
-                    // from our list a first position.
-                    if(addressList!!.isEmpty()){
-                        Snackbar.make(requireContext(), binding.cvZoomIn, "Location cannot be found", Snackbar.LENGTH_LONG).show()
-                    }else{
+                    if (addressList!!.isEmpty()) {
+                        Snackbar.make(
+                            requireContext(),
+                            binding.cvZoomIn,
+                            "Location cannot be found",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    } else {
 
-                        val address = addressList!![0]
-                        // on below line we are creating a variable for our location
-                        // where we will add our locations latitude and longitude.
+                        val address = addressList[0]
                         val latLng = LatLng(address.latitude, address.longitude)
 
                         map.clear()
 
-                        // on below line we are adding marker to that position.
                         map.addMarker(MarkerOptions().position(latLng).title(location))
 
-                        // below line is to animate camera to that position.
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f))
                     }
 
 
@@ -135,7 +132,6 @@ class MapsFragment : Fragment() {
                 return false
             }
         })
-        // at last we calling our map fragment to update.
         binding.cvZoomIn.setOnClickListener {
             zoomIn()
         }
@@ -143,36 +139,41 @@ class MapsFragment : Fragment() {
             zoomOut()
         }
         binding.cvTakeSs.setOnClickListener {
-
-            map.clear()
-
-            val snapshotReadyCallback : GoogleMap.SnapshotReadyCallback = GoogleMap.SnapshotReadyCallback { selectedScreenShot ->
-                val uri = UtilityFunctions.getUriFromBitmap(selectedScreenShot!!, requireActivity().contentResolver)
-                val intent = Intent(requireActivity(), EditMapAreaActivity::class.java)
-                intent.putExtra("mapImagePath", uri.toString())
-                startActivity(intent)
-            }
-
-            val onMapLoadedCallback : GoogleMap.OnMapLoadedCallback = GoogleMap.OnMapLoadedCallback {
-                map.snapshot(snapshotReadyCallback)
-            }
-
-            map.setOnMapLoadedCallback(onMapLoadedCallback)
+            sendScreenShot()
         }
 
         binding.cvLocateMe.setOnClickListener {
             getDeviceLocation()
         }
 
-
     }
 
-    fun zoomIn() {
+    private fun zoomIn() {
         map.animateCamera(CameraUpdateFactory.zoomIn())
     }
 
-    fun zoomOut() {
+    private fun zoomOut() {
         map.animateCamera(CameraUpdateFactory.zoomOut())
+    }
+
+    private fun sendScreenShot() {
+        map.clear()
+        val snapshotReadyCallback: GoogleMap.SnapshotReadyCallback =
+            GoogleMap.SnapshotReadyCallback { selectedScreenShot ->
+                val uri = UtilityFunctions.getUriFromBitmap(
+                    selectedScreenShot!!,
+                    requireActivity().contentResolver
+                )
+                val intent = Intent(requireActivity(), EditMapAreaActivity::class.java)
+                intent.putExtra("mapImagePath", uri.toString())
+                intent.putExtra("lastLongitude", lastLongitude)
+                intent.putExtra("lastLatitude", lastLatitude)
+                startActivity(intent)
+            }
+        val onMapLoadedCallback: GoogleMap.OnMapLoadedCallback = GoogleMap.OnMapLoadedCallback {
+            map.snapshot(snapshotReadyCallback)
+        }
+        map.setOnMapLoadedCallback(onMapLoadedCallback)
     }
 
     private fun checkPermission() {
@@ -192,16 +193,19 @@ class MapsFragment : Fragment() {
     }
 
 
-
     private fun getDeviceLocation() {
         try {
             if (locationPermissionGranted) {
                 val locationResult = fusedLocationProviderClient.lastLocation
                 locationResult.addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
-                        // Set the map's camera position to the current location of the device.
+
                         lastKnownLocation = task.result
                         if (lastKnownLocation != null) {
+
+                            lastLatitude = lastKnownLocation!!.latitude
+                            lastLongitude = lastKnownLocation!!.longitude
+
                             map.moveCamera(
                                 CameraUpdateFactory.newLatLngZoom(
                                     LatLng(
@@ -233,7 +237,6 @@ class MapsFragment : Fragment() {
                                 defaultLocation
                             ).title("Jamia Central Library")
                         )
-//                        map?.uiSettings?.isMyLocationButtonEnabled = false
                     }
                 }
             }
@@ -243,7 +246,7 @@ class MapsFragment : Fragment() {
     }
 
     override fun onResume() {
-        if(lastKnownLocation!=null){
+        if (lastKnownLocation != null) {
             map.addMarker(
                 MarkerOptions().position(
                     LatLng(

@@ -1,10 +1,8 @@
 package com.edpub.tesla
 
-import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.content.ContextCompat
+import android.view.MenuItem
 import com.edpub.tesla.databinding.ActivityMapBinding
 
 class MapActivity : AppCompatActivity() {
@@ -19,5 +17,15 @@ class MapActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.tbMapScreen)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                super.onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
