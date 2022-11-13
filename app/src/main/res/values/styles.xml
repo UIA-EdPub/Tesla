@@ -10,6 +10,12 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">#007DF9</item>
     </style>
+    <style name="logo_text">
+        <item name="android:fontFamily">@font/sirin_stencil_regular</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:letterSpacing">0.125</item>
+        <item name="android:textColor">@color/icon_inactive</item>
+    </style>
     <style name="title_default">
         <item name="android:fontFamily">@font/metropolis_semi_bold</item>
         <item name="android:textSize">20sp</item>

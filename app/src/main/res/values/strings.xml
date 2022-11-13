@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">Tesla</string>
+    <string name="app_name">TESLA</string>
     <string name="done">Done</string>
-    
+    <string name="tesla">TESLA</string>
+
     <string-array name="months">
         <item>January</item>
         <item>January</item>
