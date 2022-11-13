@@ -12,6 +12,10 @@ class CalculateSavingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCalculateSavingBinding
 
+    private var lastLatitude = ""
+    private var lastLongitude = ""
+    private var roofImageString = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -22,11 +26,15 @@ class CalculateSavingActivity : AppCompatActivity() {
         setSupportActionBar(binding.tbCalculateSavingScreen)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        roofImageString = intent.getStringExtra("mapImagePath").toString()
+        lastLatitude = intent.getStringExtra("lastLatitude").toString()
+        lastLongitude = intent.getStringExtra("lastLongitude").toString()
+
         initView()
 
     }
 
-    fun initView(){
+    private fun initView(){
         ArrayAdapter.createFromResource(
             this,
             R.array.months,
@@ -70,8 +78,6 @@ class CalculateSavingActivity : AppCompatActivity() {
 
     }
 
-    // this event will enable the back
-    // function to the button on press
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -81,4 +87,5 @@ class CalculateSavingActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
 }

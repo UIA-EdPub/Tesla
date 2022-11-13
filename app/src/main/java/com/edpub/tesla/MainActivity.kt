@@ -4,12 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.edpub.tesla.UtilityFunctions.makeReq
 import com.edpub.tesla.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -23,8 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        makeReq(this)
-        binding.bMap.setOnClickListener {
+        binding.cvCalculate.setOnClickListener {
             val intent = Intent(this, MapActivity::class.java)
             startActivity(intent)
         }

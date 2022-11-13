@@ -166,8 +166,8 @@ class MapsFragment : Fragment() {
                 )
                 val intent = Intent(requireActivity(), EditMapAreaActivity::class.java)
                 intent.putExtra("mapImagePath", uri.toString())
-                intent.putExtra("lastLongitude", lastLongitude)
-                intent.putExtra("lastLatitude", lastLatitude)
+                intent.putExtra("lastLongitude", lastLongitude.toString())
+                intent.putExtra("lastLatitude", lastLatitude.toString())
                 startActivity(intent)
             }
         val onMapLoadedCallback: GoogleMap.OnMapLoadedCallback = GoogleMap.OnMapLoadedCallback {

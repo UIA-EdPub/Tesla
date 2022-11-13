@@ -16,6 +16,10 @@ class EditMapAreaActivity : AppCompatActivity() {
 
     private lateinit var roofImageUri:Uri
 
+    private var lastLatitude = ""
+    private var lastLongitude = ""
+    private var roofImageString = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -27,9 +31,11 @@ class EditMapAreaActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
-        val roofImageString = intent.getStringExtra("mapImagePath")
+        roofImageString = intent.getStringExtra("mapImagePath").toString()
+        lastLatitude = intent.getStringExtra("lastLatitude").toString()
+        lastLongitude = intent.getStringExtra("lastLongitude").toString()
         Log.i("SexyPath", roofImageString.toString())
-        roofImageUri = Uri.parse(roofImageString)//gives null pointer exception
+        roofImageUri = Uri.parse(roofImageString)
         binding.ivRoofImage.setImageURI(roofImageUri)
 
         initView()
@@ -37,6 +43,9 @@ class EditMapAreaActivity : AppCompatActivity() {
     private fun initView(){
         binding.cvConfirm.setOnClickListener {
             val intent = Intent(this, CalculateSavingActivity::class.java)
+            intent.putExtra("mapImagePath", roofImageString)
+            intent.putExtra("lastLongitude", lastLongitude)
+            intent.putExtra("lastLatitude", lastLatitude)
             startActivity(intent)
 
         }

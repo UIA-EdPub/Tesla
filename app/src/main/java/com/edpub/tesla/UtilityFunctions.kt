@@ -34,28 +34,27 @@ object UtilityFunctions {
         return Uri.parse(path)
     }
 
-    fun makeReq(context: Context): Map<String, Any>?{
+    fun getStringData(context: Context, latitude: String, longitude: String): String{
         Log.i("fetchjson", "on")
-        // Instantiate the RequestQueue.
-        val queue = Volley.newRequestQueue(context)
-        val url = "https://power.larc.nasa.gov/api/temporal/daily/point?start=20220101&end=20220131&latitude=28.82899353809571&longitude=78.24633084540343&community=ag&parameters=T2M,ALLSKY_SFC_PAR_TOT&format=json&header=true&time-standard=lst"
 
-        var map: Map<String, Any>? = null
+        val queue = Volley.newRequestQueue(context)
+        val url =
+            "https://power.larc.nasa.gov/api/temporal/daily/point?start=20220101&end=20220131&latitude=$latitude&longitude=$longitude&community=ag&parameters=T2M,ALLSKY_SFC_PAR_TOT&format=json&header=true&time-standard=lst"
+
+        var data = ""
 
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
             { response ->
                 Log.i("fetchjson", response.toString())
-                map = converter(response.toString())
-                Log.i("fetchjson", map.toString())
+                data = response.toString()
 
             },
             { error ->
-                map = null
+                data = ""
             }
         )
         queue.add(jsonObjectRequest)
-        extractTemperatures(map)
-        return map
+        return data
     }
 
     private fun converter(myJsonObjectString: String): Map<String, Any> {
