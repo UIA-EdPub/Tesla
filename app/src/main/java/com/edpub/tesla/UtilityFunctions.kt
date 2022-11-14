@@ -34,7 +34,7 @@ object UtilityFunctions {
         return Uri.parse(path)
     }
 
-    fun getStringData(context: Context, latitude: String, longitude: String): String{
+    fun getStringData(context: Context, latitude: String, longitude: String,callback: ResponseCallback){
         Log.i("fetchjson", "on")
 
         val queue = Volley.newRequestQueue(context)
@@ -48,13 +48,14 @@ object UtilityFunctions {
                 Log.i("fetchjson", response.toString())
                 data = response.toString()
 
+                callback.onSuccess(data)
             },
             { error ->
                 data = ""
+                callback.onError(data)
             }
         )
         queue.add(jsonObjectRequest)
-        return data
     }
 
     private fun converter(myJsonObjectString: String): Map<String, Any> {

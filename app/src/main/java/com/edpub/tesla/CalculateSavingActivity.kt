@@ -73,7 +73,16 @@ class CalculateSavingActivity : AppCompatActivity() {
             val ton = binding.sTonnage.selectedItem
             val state = binding.sState.selectedItem
 
-            Log.i("CalcSav", month.toString()+ " " + ton.toString() + " " + state.toString())
+//            Log.i("CalcSav", month.toString()+ " " + ton.toString() + " " + state.toString())
+            UtilityFunctions.getStringData(this, lastLatitude, lastLongitude,object:ResponseCallback{
+                override fun onSuccess(response: String) {
+
+                }
+
+                override fun onError(response: String) {
+                }
+
+            })
         }
 
     }
