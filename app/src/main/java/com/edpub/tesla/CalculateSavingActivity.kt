@@ -73,13 +73,21 @@ class CalculateSavingActivity : AppCompatActivity() {
             val ton = binding.sTonnage.selectedItem
             val state = binding.sState.selectedItem
 
-//            Log.i("CalcSav", month.toString()+ " " + ton.toString() + " " + state.toString())
             UtilityFunctions.getStringData(this, lastLatitude, lastLongitude,object:ResponseCallback{
                 override fun onSuccess(response: String) {
+                    val valueMap = UtilityFunctions.converter(response)
+                    val propertiesMap = valueMap["properties"] as Map<String, Any?>
+                    val parameterMap = propertiesMap["parameter"] as Map<String, Any?>
+                    val temperatureMap = parameterMap["T2M"] as Map<String, Any?>
+                    val energyMap = parameterMap["ALLSKY_SFC_PAR_TOT"] as Map<String, Any?>
+
+                    Log.i("extracttion", temperatureMap.size.toString())
+                    Log.i("extracttion", energyMap.size.toString())
 
                 }
 
-                override fun onError(response: String) {
+                override fun onError(error: String) {
+                    Log.i("tag", error)
                 }
 
             })

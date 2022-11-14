@@ -41,24 +41,19 @@ object UtilityFunctions {
         val url =
             "https://power.larc.nasa.gov/api/temporal/daily/point?start=20220101&end=20220131&latitude=$latitude&longitude=$longitude&community=ag&parameters=T2M,ALLSKY_SFC_PAR_TOT&format=json&header=true&time-standard=lst"
 
-        var data = ""
-
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
             { response ->
                 Log.i("fetchjson", response.toString())
-                data = response.toString()
-
-                callback.onSuccess(data)
+                callback.onSuccess(response.toString())
             },
             { error ->
-                data = ""
-                callback.onError(data)
+                callback.onError(error.toString())
             }
         )
         queue.add(jsonObjectRequest)
     }
 
-    private fun converter(myJsonObjectString: String): Map<String, Any> {
+    fun converter(myJsonObjectString: String): Map<String, Any> {
         return Gson().fromJson(
             myJsonObjectString, object : TypeToken<HashMap<String?, Any?>?>() {}.type
         )
@@ -69,12 +64,7 @@ object UtilityFunctions {
     }
 
     fun extractTemperatures(myMap: Map<String, Any>?){
-        Log.i("fetchjson", "con")
-        if(myMap.isNullOrEmpty()){
-            Log.i("fetchjson", "retf")
-            return
-        }
-        Log.i("fetchjson", myMap["properties"].toString())
+
     }
 }
 
