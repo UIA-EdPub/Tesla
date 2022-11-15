@@ -48,4 +48,9 @@
     <style name="long_text_style">
         <item name="fontFamily">@font/metropolis_regular</item>
     </style>
+    <style name="spinner_item">
+        <item name="fontFamily">@font/metropolis_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

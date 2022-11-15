@@ -17,6 +17,8 @@ import java.io.ByteArrayOutputStream
 
 object UtilityFunctions {
 
+    val acTonnage= mutableListOf<String>("Choose your AC tonnage", "1", "2")
+
     //all temps in degree celcius
     const val min_temp = 18
     const val max_temp = 26

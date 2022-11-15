@@ -35,28 +35,10 @@ class CalculateSavingActivity : AppCompatActivity() {
     }
 
     private fun initView(){
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.ac_tonnage,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            binding.sTonnage.adapter = adapter
-        }
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.material,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            binding.sMaterial.adapter = adapter
-        }
 
+        val acAdapter = SpinnerItemAdapter(UtilityFunctions.acTonnage, this)
 
+        binding.sTonnage.adapter = acAdapter
 
         binding.cvCalculate.setOnClickListener {
 
