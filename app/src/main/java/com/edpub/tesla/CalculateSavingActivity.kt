@@ -37,16 +37,6 @@ class CalculateSavingActivity : AppCompatActivity() {
     private fun initView(){
         ArrayAdapter.createFromResource(
             this,
-            R.array.months,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            binding.sMonth.adapter = adapter
-        }
-        ArrayAdapter.createFromResource(
-            this,
             R.array.ac_tonnage,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
@@ -57,21 +47,18 @@ class CalculateSavingActivity : AppCompatActivity() {
         }
         ArrayAdapter.createFromResource(
             this,
-            R.array.states,
+            R.array.material,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
-            binding.sState.adapter = adapter
+            binding.sMaterial.adapter = adapter
         }
 
 
 
         binding.cvCalculate.setOnClickListener {
-            val month = binding.sMonth.selectedItem
-            val ton = binding.sTonnage.selectedItem
-            val state = binding.sState.selectedItem
 
             UtilityFunctions.getStringData(this, lastLatitude, lastLongitude,object:ResponseCallback{
                 override fun onSuccess(response: String) {
