@@ -24,6 +24,11 @@ object UtilityFunctions {
     const val max_temp = 26
     //if avg temp of day lies in this range: no AC required
 
+    const val roomHeight = 2.7432 //in meters (9 feet height)
+    const val airDensity = 1.2 //kg per cubic metres
+    const val specificHeat = 1.005 // kJ per kg kelvin at const pressure
+    const val tempChange = 8 //temperature change on white paint application
+
     fun savingInOneDay(r: Float, e: Float) {
 
     }
@@ -68,6 +73,13 @@ object UtilityFunctions {
     fun extractTemperatures(myMap: Map<String, Any>?){
 
     }
+
+    fun energyDueToTempChange(roofArea: Double): Double{
+        val mass = airDensity*(roofArea* roomHeight)
+
+        return mass* specificHeat* tempChange
+    }
+
 }
 
 //map[properties][parameter][T2M][each day]

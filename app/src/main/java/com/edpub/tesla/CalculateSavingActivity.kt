@@ -3,7 +3,6 @@ package com.edpub.tesla
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.edpub.tesla.databinding.ActivityCalculateSavingBinding
 
@@ -36,31 +35,6 @@ class CalculateSavingActivity : AppCompatActivity() {
 
     private fun initView(){
 
-        val acAdapter = SpinnerItemAdapter(UtilityFunctions.acTonnage, this)
-
-        binding.sTonnage.adapter = acAdapter
-
-        binding.cvCalculate.setOnClickListener {
-
-            UtilityFunctions.getStringData(this, lastLatitude, lastLongitude,object:ResponseCallback{
-                override fun onSuccess(response: String) {
-                    val valueMap = UtilityFunctions.converter(response)
-                    val propertiesMap = valueMap["properties"] as Map<String, Any?>
-                    val parameterMap = propertiesMap["parameter"] as Map<String, Any?>
-                    val temperatureMap = parameterMap["T2M"] as Map<String, Any?>
-                    val energyMap = parameterMap["ALLSKY_SFC_PAR_TOT"] as Map<String, Any?>
-
-                    Log.i("extracttion", temperatureMap.size.toString())
-                    Log.i("extracttion", energyMap.size.toString())
-
-                }
-
-                override fun onError(error: String) {
-                    Log.i("tag", error)
-                }
-
-            })
-        }
 
     }
 
