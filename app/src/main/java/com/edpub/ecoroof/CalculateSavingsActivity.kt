@@ -1,17 +1,6 @@
 package com.edpub.ecoroof
 
 import android.net.Uri
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.RequestBody.Companion.asRequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
-
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -25,13 +14,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody
-import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody.Companion.asRequestBody
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
 import java.lang.Double.min
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
@@ -47,14 +39,15 @@ class CalculateSavingsActivity : AppCompatActivity() {
         binding = ActivityCalculateSavingsBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-
+        val mapArea = intent.getDoubleExtra("mapArea", 0.0)
+        Log.i("mapAreaTag", "Calculate: " +mapArea.toString())
         val latitude = intent.getDoubleExtra("latitude", 0.0)
         val longitude = intent.getDoubleExtra("longitude", 0.0)
         val uri = Uri.parse(intent.getStringExtra("uri"))!!
 
         binding.cvGetSavings.setOnClickListener {
 //            getRawData(latitude, longitude)
-            uploadImageToApi(uri, latitude, longitude)
+            uploadImageToApi(uri, latitude, longitude, mapArea)
             Log.i(TAG, uri.toString())
         }
     }
@@ -172,7 +165,12 @@ class CalculateSavingsActivity : AppCompatActivity() {
     }
 
     // Function to make the API call
-    private fun uploadImageToApi(contentUri: Uri, latitude: Double, longitude: Double) {
+    private fun uploadImageToApi(
+        contentUri: Uri,
+        latitude: Double,
+        longitude: Double,
+        metreSquaresPerPixel: Double
+    ) {
         binding.progressBar.isIndeterminate = true
         val file = File(filesDir, "image.jpeg")
         val inputStream = contentResolver.openInputStream(contentUri)
@@ -203,13 +201,18 @@ class CalculateSavingsActivity : AppCompatActivity() {
                 runOnUiThread {
                     Log.i(TAG, response.toString())
                     binding.progressBar.isIndeterminate = false
-                    binding.etArea.setText(response.get("size").toString().removeSurrounding("\""))
+
+                    val size = response.get("size").toString().removeSurrounding("\"").toDouble()
+                    val area = size * metreSquaresPerPixel
+                    binding.etArea.setText(area.toString())
+
                     getRawData(latitude, longitude)
                 }
             } catch (e: Exception) {
                 Log.i(TAG, e.toString())
                 runOnUiThread {
-                    Toast.makeText(this@CalculateSavingsActivity, "Error: $e", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CalculateSavingsActivity, "Error: $e", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 

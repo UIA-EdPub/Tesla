@@ -175,10 +175,11 @@ class MapsFragment : Fragment() {
         map.clear()
         val snapshotReadyCallback: GoogleMap.SnapshotReadyCallback =
             GoogleMap.SnapshotReadyCallback { selectedScreenShot ->
+                val mapArea = getArea()
                 val intent = Intent(requireActivity(), EditMapAreaActivity::class.java)
                 val uri = Utils.getUriFromBitmap(selectedScreenShot!!, requireActivity().contentResolver).toString()
                 intent.putExtra("uri", uri)
-                intent.putExtra("metreSquarePerPixel", getMetreSquarePerPixel())
+                intent.putExtra("mapArea", mapArea)
                 intent.putExtra("latitude", lastLatitude)
                 intent.putExtra("longitude", lastLongitude)
                 startActivity(intent)
@@ -286,7 +287,7 @@ class MapsFragment : Fragment() {
         }
     }
 
-    private fun getMetreSquarePerPixel():Double{
+    private fun getArea():Double{
         val projection = map.projection
         val visibleRegion = projection.visibleRegion
         val farLeft = visibleRegion.farLeft
@@ -309,8 +310,7 @@ class MapsFragment : Fragment() {
             (nearLeft.longitude + nearRight.longitude) / 2,
             height
         )
-        val area = width[0].toDouble() * height[0].toDouble()
-        return area
+        return width[0].toDouble() * height[0].toDouble()
     }
 
 }

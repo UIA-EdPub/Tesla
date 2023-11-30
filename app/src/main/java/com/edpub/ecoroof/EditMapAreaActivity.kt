@@ -21,7 +21,8 @@ class EditMapAreaActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val uri = Uri.parse(intent.getStringExtra("uri"))
-        val metreSquarePerPixel = intent.getDoubleExtra("metreSquarePerPixel", 0.0)
+        val mapArea = intent.getDoubleExtra("mapArea", 0.0)
+        Log.i("mapAreaTag", "Edit: " + mapArea.toString())
         val latitude = intent.getDoubleExtra("latitude", 0.0)
         val longitude = intent.getDoubleExtra("longitude", 0.0)
 
@@ -33,7 +34,7 @@ class EditMapAreaActivity : AppCompatActivity() {
 
             val intent = Intent(this, CalculateSavingsActivity::class.java)
             intent.putExtra("uri", croppedImageUri.toString())
-            intent.putExtra("metreSquarePerPixel", metreSquarePerPixel)
+            intent.putExtra("mapArea", mapArea)
             intent.putExtra("latitude", latitude)
             intent.putExtra("longitude", longitude)
             startActivity(intent)
