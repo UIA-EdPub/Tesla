@@ -175,10 +175,10 @@ class MapsFragment : Fragment() {
         map.clear()
         val snapshotReadyCallback: GoogleMap.SnapshotReadyCallback =
             GoogleMap.SnapshotReadyCallback { selectedScreenShot ->
-                val intent = Intent(requireActivity(), CalculateSavingsActivity::class.java)
+                val intent = Intent(requireActivity(), EditMapAreaActivity::class.java)
                 val uri = Utils.getUriFromBitmap(selectedScreenShot!!, requireActivity().contentResolver).toString()
                 intent.putExtra("uri", uri)
-                Log.i(TAG, uri)
+                intent.putExtra("metreSquarePerPixel", getMetreSquarePerPixel())
                 intent.putExtra("latitude", lastLatitude)
                 intent.putExtra("longitude", lastLongitude)
                 startActivity(intent)
@@ -284,6 +284,33 @@ class MapsFragment : Fragment() {
                 LOCATION_REQUEST_CODE
             )
         }
+    }
+
+    private fun getMetreSquarePerPixel():Double{
+        val projection = map.projection
+        val visibleRegion = projection.visibleRegion
+        val farLeft = visibleRegion.farLeft
+        val farRight = visibleRegion.farRight
+        val nearLeft = visibleRegion.nearLeft
+        val nearRight = visibleRegion.nearRight
+        val width = FloatArray(1)
+        Location.distanceBetween(
+            (farLeft.latitude + nearLeft.latitude) / 2,
+            farLeft.longitude,
+            (farRight.latitude + nearRight.latitude) / 2,
+            farRight.longitude,
+            width
+        )
+        val height = FloatArray(1)
+        Location.distanceBetween(
+            farLeft.latitude,
+            (farLeft.longitude + farRight.longitude) / 2,
+            nearLeft.latitude,
+            (nearLeft.longitude + nearRight.longitude) / 2,
+            height
+        )
+        val area = width[0].toDouble() * height[0].toDouble()
+        return area
     }
 
 }

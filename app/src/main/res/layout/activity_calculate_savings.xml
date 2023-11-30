@@ -142,28 +142,39 @@
             app:trackCornerRadius="2dp" />
 
 
-        <com.google.android.material.textview.MaterialTextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/tv_units_saved"
             style="@style/small_text_style_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin"
-            android:background="@drawable/message_background"
+            android:backgroundTint="@color/white"
             android:gravity="center"
-            android:text="0.0"
-            app:layout_constraintBottom_toTopOf="@id/tv_cost_saved" />
+            android:text="-- units saved"
+            app:cornerRadius="@dimen/default_corner_radius"
+            app:layout_constraintBottom_toTopOf="@id/tv_cost_saved"
+            app:strokeColor="@color/chapter_title"
+            app:strokeWidth="1.5dp" />
 
 
-        <com.google.android.material.textview.MaterialTextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/tv_cost_saved"
             style="@style/small_text_style_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin"
-            android:background="@drawable/message_background"
+            android:backgroundTint="@color/white"
+            android:enabled="false"
             android:gravity="center"
-            android:text="0.0"
-            app:layout_constraintBottom_toTopOf="@id/cv_get_savings" />
+            android:text="-- saved"
+            app:cornerRadius="@dimen/default_corner_radius"
+            app:icon="@drawable/ic_rupee"
+            app:iconGravity="textStart"
+            app:iconSize="20dp"
+            app:iconTint="@color/chapter_title"
+            app:layout_constraintBottom_toTopOf="@id/cv_get_savings"
+            app:strokeColor="@color/chapter_title"
+            app:strokeWidth="1.5dp" />
 
 
         <com.google.android.material.card.MaterialCardView
@@ -187,7 +198,6 @@
             app:layout_constraintLeft_toLeftOf="@id/cv_get_savings"
             app:layout_constraintRight_toRightOf="@id/cv_get_savings"
             app:layout_constraintTop_toTopOf="@id/cv_get_savings" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

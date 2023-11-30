@@ -54,7 +54,7 @@ class CalculateSavingsActivity : AppCompatActivity() {
 
         binding.cvGetSavings.setOnClickListener {
 //            getRawData(latitude, longitude)
-            uploadImageToApi(uri)
+            uploadImageToApi(uri, latitude, longitude)
             Log.i(TAG, uri.toString())
         }
     }
@@ -172,7 +172,8 @@ class CalculateSavingsActivity : AppCompatActivity() {
     }
 
     // Function to make the API call
-    private fun uploadImageToApi(contentUri: Uri) {
+    private fun uploadImageToApi(contentUri: Uri, latitude: Double, longitude: Double) {
+        binding.progressBar.isIndeterminate = true
         val file = File(filesDir, "image.jpeg")
         val inputStream = contentResolver.openInputStream(contentUri)
         val outputStream = FileOutputStream(file)
@@ -182,16 +183,39 @@ class CalculateSavingsActivity : AppCompatActivity() {
 
         val part = MultipartBody.Part.createFormData("image", file.name, requestBody)
 
-        val retrofit = Retrofit.Builder().baseUrl("https://ecoroofserver.onrender.com")
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://ecoroofserver.onrender.com")
             .addConverterFactory(GsonConverterFactory.create())
+            .client(
+                OkHttpClient.Builder()
+                    .connectTimeout(120, TimeUnit.SECONDS) // Set a longer timeout
+                    .readTimeout(120, TimeUnit.SECONDS)
+                    .writeTimeout(120, TimeUnit.SECONDS)
+                    .build()
+            )
             .build()
             .create(ApiService::class.java)
 
+
         CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = retrofit.uploadImage(part)
+                runOnUiThread {
+                    Log.i(TAG, response.toString())
+                    binding.progressBar.isIndeterminate = false
+                    binding.etArea.setText(response.get("size").toString().removeSurrounding("\""))
+                    getRawData(latitude, longitude)
+                }
+            } catch (e: Exception) {
+                Log.i(TAG, e.toString())
+                runOnUiThread {
+                    Toast.makeText(this@CalculateSavingsActivity, "Error: $e", Toast.LENGTH_SHORT).show()
+                }
+            }
+
             val response = retrofit.uploadImage(part)
             Log.i(TAG, "Response: " + response.toString())
         }
-
     }
 
     interface ApiService {
