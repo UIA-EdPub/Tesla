@@ -176,6 +176,7 @@ class MapsFragment : Fragment() {
         val snapshotReadyCallback: GoogleMap.SnapshotReadyCallback =
             GoogleMap.SnapshotReadyCallback { selectedScreenShot ->
                 val mapArea = getArea()
+                Log.i("mapAreaTag", "area: $mapArea")
                 val intent = Intent(requireActivity(), EditMapAreaActivity::class.java)
                 val uri = Utils.getUriFromBitmap(selectedScreenShot!!, requireActivity().contentResolver).toString()
                 intent.putExtra("uri", uri)
@@ -310,7 +311,9 @@ class MapsFragment : Fragment() {
             (nearLeft.longitude + nearRight.longitude) / 2,
             height
         )
-        return width[0].toDouble() * height[0].toDouble()
+        return ((width[0].toDouble() * height[0].toDouble())/2)
     }
+
+
 
 }

@@ -46,7 +46,6 @@ class CalculateSavingsActivity : AppCompatActivity() {
         val uri = Uri.parse(intent.getStringExtra("uri"))!!
 
         binding.cvGetSavings.setOnClickListener {
-//            getRawData(latitude, longitude)
             uploadImageToApi(uri, latitude, longitude, mapArea)
             Log.i(TAG, uri.toString())
         }
@@ -203,7 +202,7 @@ class CalculateSavingsActivity : AppCompatActivity() {
                     binding.progressBar.isIndeterminate = false
 
                     val size = response.get("size").toString().removeSurrounding("\"").toDouble()
-                    val area = size * metreSquaresPerPixel
+                    val area = size * 1
                     binding.etArea.setText(area.toString())
 
                     getRawData(latitude, longitude)
